@@ -1,0 +1,80 @@
+#include <stdlib.h>
+
+int ** matriz_multi(int size, int ***A, int ***B){
+    int i, j, k,**C;
+    //Gerando Matriz com retorno e mult
+    C = malloc(sizeof(int **)*size);
+    for (i=0;i<size;i++){
+    	C[i] = malloc(sizeof(int *)*size);
+        for(j=0;j<size;j++){
+            for (k=0;k<size;k++)
+                C[i][j] += (*A)[i][k] * (*B)[k][j];
+        }
+    }
+    return C;
+}
+int ** matriz_soma(int size, int ***A,int ax, int ay, int ***B,int bx, int by, int ***C, int cx, int cy){
+    int i, j, k;
+    //Gerando Matriz com retorno e mult
+    for (i=0;i<size;i++){
+        for(j=0;j<size;j++){
+            for (k=0;k<size;k++)
+                C[i][j] += (*A)[ax+i][ay+k] + (*B)[bx+k][by+j];
+        }
+    }
+    return C;
+}
+int ** matriz_sub(int size, int ***A, int ax, int ay, int ***B, int bx, int by, int ***C, int cx, int cy){
+	int i, j, k;
+	    //Gerando Matriz com retorno e mult
+	    for (i=0;i<size;i++){
+	    	for(j=0;j<size;j++){
+	            for (k=0;k<size;k++)
+	                (*C)[cx+i][cx+j] += (*A)[ax+i][ay+k] - (*B)[ax+k][ay+j];
+	        }
+	    }
+	    return C;
+}
+
+int ** matriz_multi_strass(int size, int ***A, int ax, int ay, int ***B, int bx, int by,int ***C, int cx, int cy){
+    int i,j;
+    //Matrizes Intermediarias
+    int **S1, **S2, **S3, **S4, **T1, **T2, **T3, **T4;
+    int **P1, **P2, **P3, **P4, **P5, **P6, **P7;
+    int **U1, **U2, **U3, **U4, **U5, **U6, **U7;
+
+    if(size==1){
+   // 	if(hpad>0){
+    //		(*C)[c][0] = 0;
+    //		return C;
+    //	}
+    	(*C)[cx][cy] = 	(*A)[ax][ay] * (*B)[bx][by];
+    	return 1;
+    }
+    else{
+    	size <<= 1;
+//Fase 1
+    	S1 = matriz_soma(size,A,ax,ay,A,ax+size,ay+size,); 		//A21 + A22
+    	S2 = matriz_sub (size,&S1,0,0,A,ax,ay);					//S1  - A11
+    	S3 = matriz_sub (size,A,ax,ay,A,ax,ay+size);			//A11 - A21
+    	S4 = matriz_sub (size,A,ax+size,ay,&S2,0,0);			//A12 - S2
+    	T1 = matriz_sub (size,B,bx+size,by,B,bx,by);			//B12 - B11
+    	T2 = matriz_sub (size,B,bx+size,by+size,&T1,0,0);		//B22 - T1
+    	T3 = matriz_sub (size,B,bx+size,by+size,B,bx+size,by);	//B22 - B12
+    	T4 = matriz_sub (size,B,bx,by+size,&T2,0,0);			//B21 - T2
+
+    	//Fase 2
+    	P1 = matriz_multi_strass (size,A,ax,ay,B,bx,by);			//A11 + B11
+    	P2 = matriz_multi_strass (size,A,ax+size,ay,B,bx,by+size);	//A12 + B21
+    	P3 = matriz_multi_strass (size,&S1,0,0,&T1,0,0);			//S1  + T1
+    	P4 = matriz_multi_strass (size,&S2,0,0,&T2,0,0);			//S2  + T2
+    	P5 = matriz_multi_strass (size,&S3,0,0,&T3,0,0);			//S3  + T3
+    	P6 = matriz_multi_strass (size,&S4,0,0,B,bx+size,by+size);	//S4  + B22
+    	P7 = matriz_multi_strass (size,A,ax+size,ay+size,&T4,0,0);			//A22 + T4
+
+
+     m1 = matriz_multi_strass(size,matriz_soma(size,&A,ax,ay,&A,bx+size,by+size),0,0,matriz	);
+     m2 = matriz_multi_strass(matriz_soma(size,&A,ax,ay,&A,bx+size,by+size, 0, 0));
+
+}
+
