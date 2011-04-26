@@ -7,7 +7,7 @@ int matriz_place(int size, int ***A, int ai, int aj, int ***C);
 int ** matriz_multi(int size, int ***A, int ***B){
     int i, j, k,**C;
     //Gerando Matriz com retorno e mult
-    C = malloc(sizeof(int **)*size);
+    C = (int **) malloc(sizeof(int **)*size);
     for (i=0;i<size;i++){
     	C[i] = malloc(sizeof(int *)*size);
         for(j=0;j<size;j++){
@@ -20,11 +20,13 @@ int ** matriz_multi(int size, int ***A, int ***B){
 }
 int ** matriz_soma(int size, int ***A,int ai, int aj, int ***B,int bi, int bj){
     int i, j, k, **C;
-
+    printf("Executando %i+%i\n",size,size);
+    mostraMatInt(size,A,ai,aj);
+    mostraMatInt(size,B,bi,bj);
     //Gerando Matriz com retorno e mult
-    C=malloc(size *sizeof(int *));
+    C=(int **) malloc(size * sizeof(int **));
     for (i=0;i<size;i++){
-    	C[i]=malloc(size *sizeof(int *));
+    	C[i]=(int *) malloc(size *sizeof(int *));
         for(j=0;j<size;j++){
             for (k=0;k<size;k++)
                 C[i][j] += (*A)[ai+i][aj+k] + (*B)[bi+k][bj+j];
@@ -35,7 +37,10 @@ int ** matriz_soma(int size, int ***A,int ai, int aj, int ***B,int bi, int bj){
 }
 int ** matriz_sub(int size, int ***A, int ai, int aj, int ***B, int bi, int bj){
 	int i, j, k, **C;
-	    //Gerando Matriz com retorno e mult
+	printf("Executando %i-%i\n",size,size);
+	    mostraMatInt(size,A,ai,aj);
+	    mostraMatInt(size,B,bi,bj);
+	//Gerando Matriz com retorno e mult
     C=malloc(size *sizeof(int *));
     for (i=0;i<size;i++){
     	C[i]=malloc(size *sizeof(int *));
@@ -59,20 +64,20 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
     for (i=0;i<size;i++)
     	C[i] = malloc(size * sizeof(int *));
 */
-	printf ("Executando\n");
+	printf ("Executando %ix%i\n",size,size);
     mostraMatInt(size,A,ai,aj);
 	printf ("x\n");
     mostraMatInt(size,B,bi,bj);
 
     if(size==1){
-    	C = malloc(sizeof(int*));
-    	C[0] = malloc(sizeof(int *));
+    	C = (int **) malloc(sizeof(int **));
+    	*C = malloc(sizeof(int *));
 
    // 	if(hpad>0){
     //		(*C)[c][0] = 0;
     //		return C;
     //	}
-    	C[0][0] = 	(*A)[ai][aj] * (*B)[bi][bj];
+    	**C = 	(*A)[ai][aj] * (*B)[bi][bj];
     	mostraMatInt(1,&C,0,0);
     	return C;
     }
@@ -108,9 +113,13 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
         C = malloc(2 * size * sizeof(int*));
         for (i=0;i<(2 * size);i++)
         	C[i] = malloc((2 * size) * sizeof(int *));
+        mostraMatInt(size,&U1,0,0);
         matriz_place(size,&C,0,0,&U1 );			//C11
+        mostraMatInt(size,&U7,0,0);
         matriz_place(size,&C,0,size,&U7 );  	//C12
+        mostraMatInt(size,&U4,0,0);
         matriz_place(size,&C,size,0,&U4 );		//C21
+        mostraMatInt(size,&U5,0,0);
         matriz_place(size,&C,size,size,&U5 );	//C22
 
         mostraMatInt(2*size,&C,0,0);
@@ -118,13 +127,12 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
     }
 }
    int matriz_place(int size, int ***A, int ai, int aj, int ***C){
-	   int i,j,v;
+	   int i,j;
 	   for (i=0;i<size;i++){
 		   for(j=0;j<size;j++){
-			   v = (*C)[i][j];
-			   (*A)[ai+i][aj+j] = v;
+			   (*A)[ai+i][aj+j] = (*C)[i][j];;
 		   }
 	   }
 	   return 1;
-a}
+}
 
