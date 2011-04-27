@@ -52,7 +52,6 @@ MyOpt.arquivo=NULL;
 				MyOpt.arquivo = optarg;
 				opterr--;
 				break;
-
             case 'h':   /* Help */
             case '?':
                 mostra_uso(argv[0]);

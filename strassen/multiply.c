@@ -4,10 +4,11 @@
 //#include "strassen.c"
 #include "matriz.h"
 #include "es.h"
+#include "../debug.h"
+
 
 struct MyOpt { 
 int alg;         // Qual algoritimo usar strassen ou padrao
-int verb;        // Nivel de verbosidade do processamento
 char *fileA ;    // arquivo Matriz A (fator)
 char *fileB ;    // arquivo Matriz B (fator)
 char *fileC ;    // arquivo Matriz C (produto)
@@ -22,7 +23,7 @@ int opterr,dim;
 int **A,**B,**C;
 
 MyOpt.alg  =0;
-MyOpt.verb =0;
+_VERB =0;
 MyOpt.fileA=NULL;
 MyOpt.fileB=NULL;
 MyOpt.fileC=NULL;
@@ -50,7 +51,7 @@ MyOpt.fileC=NULL;
                     break;
                 case 'v':
                     //Verbosidade
-                    MyOpt.verb = atoi(optarg);
+                    _VERB = atoi(optarg);
                     break;
                 case 's':
                     MyOpt.alg = 1;

@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "es.h"
+#include "../debug.h"
+
+
 
 int matriz_place(int size, int ***A, int ai, int aj, int ***C);
 
@@ -15,41 +18,39 @@ int ** matriz_multi(int size, int ***A, int ***B){
                 C[i][j] += (*A)[i][k] * (*B)[k][j];
         }
     }
-    mostraMatInt(size,&C,0,0);
+    verb2p(mostraMatInt(size,&C,0,0),1);
     return C;
 }
 int ** matriz_soma(int size, int ***A,int ai, int aj, int ***B,int bi, int bj){
-    int i, j, k, **C;
-    printf("Executando %i+%i\n",size,size);
-    mostraMatInt(size,A,ai,aj);
-    mostraMatInt(size,B,bi,bj);
+    int i, j, **C;
+    verb2p(printf("Executando %i+%i\n",size,size),1);
+    verb2p(mostraMatInt(size,A,ai,aj),1);
+    verb2p(mostraMatInt(size,B,bi,bj),1);
     //Gerando Matriz com retorno e mult
     C=(int **) malloc(size * sizeof(int **));
     for (i=0;i<size;i++){
     	C[i]=(int *) malloc(size *sizeof(int *));
         for(j=0;j<size;j++){
-            for (k=0;k<size;k++)
-                C[i][j] += (*A)[ai+i][aj+k] + (*B)[bi+k][bj+j];
+                C[i][j] += (*A)[ai+i][aj+j] + (*B)[bi+i][bj+j];
         }
     }
-    mostraMatInt(size,&C,0,0);
+    verb2p(mostraMatInt(size,&C,0,0),1);
     return C;
 }
 int ** matriz_sub(int size, int ***A, int ai, int aj, int ***B, int bi, int bj){
-	int i, j, k, **C;
-	printf("Executando %i-%i\n",size,size);
-	    mostraMatInt(size,A,ai,aj);
-	    mostraMatInt(size,B,bi,bj);
+	int i, j, **C;
+	verb2p(printf("Executando %i-%i\n",size,size),1);
+	verb2p(mostraMatInt(size,A,ai,aj),1);
+	verb2p(mostraMatInt(size,B,bi,bj),1);
 	//Gerando Matriz com retorno e mult
     C=malloc(size *sizeof(int *));
     for (i=0;i<size;i++){
     	C[i]=malloc(size *sizeof(int *));
 	    	for(j=0;j<size;j++){
-	            for (k=0;k<size;k++)
-	                C[i][j] += (*A)[ai+i][aj+k] - (*B)[bi+k][bj+j];
+	                C[i][j] += (*A)[ai+i][aj+j] - (*B)[bi+i][bj+j];
 	        }
 	    }
-    	mostraMatInt(size,&C,0,0);
+    verb2p(mostraMatInt(size,&C,0,0),1);
 	    return C;
 }
 
@@ -64,10 +65,10 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
     for (i=0;i<size;i++)
     	C[i] = malloc(size * sizeof(int *));
 */
-	printf ("Executando %ix%i\n",size,size);
-    mostraMatInt(size,A,ai,aj);
-	printf ("x\n");
-    mostraMatInt(size,B,bi,bj);
+    verb2p(printf ("Executando %ix%i\n",size,size),1);
+    verb2p(mostraMatInt(size,A,ai,aj),1);
+    verb2p(printf ("x\n"),1);
+    verb2p(mostraMatInt(size,B,bi,bj),1);
 
     if(size==1){
     	C = (int **) malloc(sizeof(int **));
@@ -78,7 +79,7 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
     //		return C;
     //	}
     	**C = 	(*A)[ai][aj] * (*B)[bi][bj];
-    	mostraMatInt(1,&C,0,0);
+    	verb2p(mostraMatInt(1,&C,0,0),1);
     	return C;
     }
     else{
@@ -113,16 +114,16 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
         C = malloc(2 * size * sizeof(int*));
         for (i=0;i<(2 * size);i++)
         	C[i] = malloc((2 * size) * sizeof(int *));
-        mostraMatInt(size,&U1,0,0);
-        matriz_place(size,&C,0,0,&U1 );			//C11
-        mostraMatInt(size,&U7,0,0);
-        matriz_place(size,&C,0,size,&U7 );  	//C12
-        mostraMatInt(size,&U4,0,0);
-        matriz_place(size,&C,size,0,&U4 );		//C21
-        mostraMatInt(size,&U5,0,0);
-        matriz_place(size,&C,size,size,&U5 );	//C22
+        verb2p(mostraMatInt(size,&U1,0,0),1);
+        matriz_place(size,&C,0,0,&U1);			//C11
+        verb2p(mostraMatInt(size,&U7,0,0),1);
+        matriz_place(size,&C,0,size,&U7);  	//C12
+        verb2p(mostraMatInt(size,&U4,0,0),1);
+        matriz_place(size,&C,size,0,&U4);		//C21
+        verb2p(mostraMatInt(size,&U5,0,0),1);
+        matriz_place(size,&C,size,size,&U5);	//C22
 
-        mostraMatInt(2*size,&C,0,0);
+        verb2p(mostraMatInt(2*size,&C,0,0),1);
         return C;
     }
 }
