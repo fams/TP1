@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-//#include "strassen.c"
 #include "matriz.h"
-#include "es.h"
+#include "../util/es.h"
 #include "../debug.h"
 
 

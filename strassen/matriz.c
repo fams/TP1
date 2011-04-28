@@ -1,11 +1,19 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "es.h"
+#include "../util/es.h"
 #include "../debug.h"
 
 
 
 int matriz_place(int size, int ***A, int ai, int aj, int ***C);
+
+void free_matriz(int size, int ***A){
+	int i;
+	for (i=0;i<size;i++){
+		free((*A)[i]);
+	}
+	free(*A);
+}
 
 int ** matriz_multi(int size, int ***A, int ***B){
     int i, j, k,**C;
@@ -124,6 +132,28 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
         matriz_place(size,&C,size,size,&U5);	//C22
 
         verb2p(mostraMatInt(2*size,&C,0,0),1);
+        free_matriz(size,&S1);
+        free_matriz(size,&S2);
+        free_matriz(size,&S3);
+        free_matriz(size,&S4);
+        free_matriz(size,&T1);
+        free_matriz(size,&T2);
+        free_matriz(size,&T3);
+        free_matriz(size,&T4);
+        free_matriz(size,&P1);
+        free_matriz(size,&P2);
+        free_matriz(size,&P3);
+        free_matriz(size,&P4);
+        free_matriz(size,&P5);
+        free_matriz(size,&P6);
+        free_matriz(size,&P7);
+        free_matriz(size,&U1);
+        free_matriz(size,&U2);
+        free_matriz(size,&U3);
+        free_matriz(size,&U4);
+        free_matriz(size,&U5);
+        free_matriz(size,&U6);
+        free_matriz(size,&U7);
         return C;
     }
 }
