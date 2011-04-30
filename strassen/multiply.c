@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "matriz.h"
 #include "../util/es.h"
-#include "../debug.h"
+#include "../util/debug.h"
 
 
 struct MyOpt { 
