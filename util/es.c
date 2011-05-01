@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#define m(mat,size,i,j) mat[(size*i)+j]
+
 
 #define MATMAX 1024
 
 //Carrega o arquivo da matriz
-int carrMatInt(char *filename, int *size, int ***Mat){
+int carrMatInt(char *filename, int *size, int **Mat){
 FILE *fp;
 char buffer[MATMAX];
 int  m,n,d, i=0,j=0;
@@ -38,29 +40,29 @@ char *elemento, *linha;
         d = n ;
 
 //Carregando a matriz, completando com zeros se nao for quadrada
-        *Mat = malloc(sizeof(int **)*d);
+        *Mat = malloc(sizeof(int *) * d * d);
     while((fgets(buffer, MATMAX, fp)!=NULL) && i < d){
     	//Alocando a matriz com inteiros
-    	(*Mat)[i] = malloc(sizeof(int *)*d);
+    	//(*Mat)[i] = malloc(sizeof(int *)*d*d);
         elemento = strtok(buffer,",");
         while( elemento  && j < d){
-            (*Mat)[i][j] = atoi(elemento);
+            m((*Mat),d,i,j) = atoi(elemento);
             elemento = strtok('\0',",");
             j++; 
         }
         //Completando com zeros
         for (;j<d;j++)
-              (*Mat)[i][j] = 0;
+              m(*Mat,d,i,j) = 0;
         j=0;
         i++;
     }
         for (;i<d;i++)
-               (*Mat)[i][j] = 0;
+               m(*Mat,d,i,j) = 0;
         *size = i;
         return 0;
 } 
 // Salva Matriz em Arquivo
-int gravaMatInt(char *filename, int *size, int ***Mat){
+int gravaMatInt(char *filename, int *size, int *Mat){
     FILE *fp;
     int i=0,j=0;
 //Abrindo arquivo
@@ -76,7 +78,7 @@ int gravaMatInt(char *filename, int *size, int ***Mat){
     *linha='\0';
     for(i=0;i<(*size);i++){
         for(j=0;j<(*size);j++){
-            sprintf(num,"%i,",(*Mat)[i][j]);
+            sprintf(num,"%i,",m(Mat,*size,i,j));
             strcat(linha,num); 
         }
         s=strlen(linha);
@@ -89,7 +91,7 @@ int gravaMatInt(char *filename, int *size, int ***Mat){
     return 1;
 }
 // Salva Matriz em Arquivo
-int mostraMatInt( int size, int ***Mat, int mi, int mj){
+int mostraMatInt( int size, int *Mat, int mi, int mj){
     int i=0,j=0;
     //Gravando aqruivo
     char linha[13*size+10];
@@ -98,7 +100,7 @@ int mostraMatInt( int size, int ***Mat, int mi, int mj){
     *linha='\0';
     for(i=0;i<size;i++){
         for(j=0;j< size;j++){
-            sprintf(num,"%i,",(*Mat)[i+mi][j+mj]);
+            sprintf(num,"%i,",m(Mat,size,i+mi,j+mj));
             strcat(linha,num);
         }
         s=strlen(linha);

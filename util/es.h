@@ -5,8 +5,8 @@
  *      Author: fams
  */
 
-int carrMatInt(char *filename, int *size, int ***Mat);
+int carrMatInt(char *filename, int *size, int **Mat);
 
-int gravaMatInt(char *filename, int *size, int ***Mat);
+int gravaMatInt(char *filename, int *size, int **Mat);
 
-int mostraMatInt( int size, int ***Mat,int ai, int aj);
+int mostraMatInt( int size, int *Mat,int ai, int aj);

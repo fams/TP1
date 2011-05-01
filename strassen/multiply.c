@@ -19,7 +19,7 @@ void mostra_uso(char *name){
 
 int main(int argc, char **argv){
 int opterr,dim;
-int **A,**B,**C;
+int *A,*B,*C;
 
 MyOpt.alg  =0;
 _VERB =0;
@@ -30,7 +30,7 @@ MyOpt.fileC=NULL;
 /* Processando parametros*/
     opterr = 3;
     int opcao; // Opção passada pelo usuário ao programa.
-        while ((opcao = getopt (argc, argv, "sa:b:c:h")) != -1){
+        while ((opcao = getopt (argc, argv, "v:sa:b:c:h")) != -1){
                 switch(opcao){
                 case 'a':
                     //Matriz A
@@ -43,19 +43,23 @@ MyOpt.fileC=NULL;
                     MyOpt.fileB = optarg;
                     opterr--;
                     break;
+
                 case 'c':
                     //Matriz C
                     MyOpt.fileC = optarg;
                     opterr--;
                     break;
+
                 case 'v':
                     //Verbosidade
                     _VERB = atoi(optarg);
                     break;
+
                 case 's':
                     MyOpt.alg = 1;
                     break;
-            case '?':
+
+                case '?':
                     switch(optopt){
                         case 'a':
                         case 'b':
@@ -85,11 +89,11 @@ MyOpt.fileC=NULL;
 
     if(MyOpt.alg){
         printf("Strassen\n");
-        C = matriz_multi_strass(dim,&A,0,0,&B,0,0);
+        C = matriz_multi_strass(dim,A,0,0,B,0,0);
     }else{
-        C = matriz_multi(dim,&A,&B);
+        C = matriz_multi(dim,A,B);
     }
-    gravaMatInt(MyOpt.fileC,&dim,&C);
+    gravaMatInt(MyOpt.fileC,&dim,C);
 
     exit(0);
 } 
