@@ -55,8 +55,8 @@ int * matriz_soma(
     for (i=0;i<n;i++){
     	//C[i]=(int *) malloc(size *sizeof(int *));
         for(j=0;j<n;j++){
-                m(C,n,i,j) += m(A,as,ai+i,aj+j) + m(B,bs,bi+i,bj+j);
-                //printf("C[%i][%i] (%i) = A[%i][%i] (%i) + B[%i][%i] (%i)\n", i, j, m(C,osize,i,j), ai+i, aj+j, m(A,isize,ai+i,aj+j), i+bi, j+bj, m(B,isize,bi+i,bj+j) );
+                m(C,n,i,j) = m(A,as,ai+i,aj+j) + m(B,bs,bi+i,bj+j);
+                verb2p(printf("C[%i][%i] (%i) = A[%i][%i] (%i) + B[%i][%i] (%i)\n", i, j, m(C,n,i,j), ai+i, aj+j, m(A,as,ai+i,aj+j), i+bi, j+bj, m(B,bs,bi+i,bj+j) ),2);
         }
     }
     verb2p(mostraMatInt(n,C,0,0),1);
@@ -83,7 +83,7 @@ int * matriz_sub(
     for (i=0;i<n;i++){
     	//C[i]=malloc(size *sizeof(int *));
 	    	for(j=0;j<n;j++){
-	                m(C,n,i,j) += m(A,as,ai+i,aj+j) - m(B,bs,bi+i,bj+j);
+	                m(C,n,i,j) = m(A,as,ai+i,aj+j) - m(B,bs,bi+i,bj+j);
 	        }
 	    }
     verb2p(mostraMatInt2(n,n,C,0,0),1);
@@ -124,7 +124,7 @@ int * matriz_multi_strass(
     //		(*C)[c][0] = 0;
     //		return C;
     //	}
-    	*C = 	m(A,n,ai,aj) * m(B,n,bi,bj);
+    	*C = 	m(A,as,ai,aj) * m(B,bs,bi,bj);
     	verb2p(mostraMatInt2(1,1,C,0,0),1);
     	return C;
     }
@@ -183,14 +183,18 @@ int * matriz_multi_strass(
         for (i=0;i<(2 * n);i++)
 
         verb2p(mostraMatInt2(n,n,U1,0,0),1);
-        matriz_place(n,C,0,0,n,U1,0,0,n);			//C11
+        matriz_place(n,C,0,0,2*n,U1,0,0,n);			//C11
+
         verb2p(mostraMatInt2(n,n,U7,0,0),1);
-        matriz_place(n,C,0,n,n,U7,0,0,n);  	//C12
+        matriz_place(n,C,0,n,2*n,U7,0,0,n);  	//C12
+
         verb2p(mostraMatInt2(n,n,U4,0,0),1);
-        matriz_place(n,C,n,0,n,U4,0,0,n);		//C21
+        matriz_place(n,C,n,0,2*n,U4,0,0,n);		//C21
+
         verb2p(mostraMatInt2(n,n,U5,0,0),1);
-        matriz_place(n,C,n,n,n,U5,0,0,n);	//C22
-        verb2p(mostraMatInt2(n,n,C,0,0),1);
+        matriz_place(n,C,n,n,2*n,U5,0,0,n);	//C22
+
+        verb2p(mostraMatInt2(2*n,2*n,C,0,0),1);
         free(S1);
         free(S2);
         free(S3);
