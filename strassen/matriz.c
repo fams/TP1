@@ -39,7 +39,7 @@ int ** matriz_soma(int size, int ***A,int ai, int aj, int ***B,int bi, int bj){
     for (i=0;i<size;i++){
     	C[i]=(int *) malloc(size *sizeof(int *));
         for(j=0;j<size;j++){
-                C[i][j] += (*A)[ai+i][aj+j] + (*B)[bi+i][bj+j];
+                C[i][j] = (*A)[ai+i][aj+j] + (*B)[bi+i][bj+j];
         }
     }
     verb2p(mostraMatInt(size,&C,0,0),1);
@@ -55,11 +55,11 @@ int ** matriz_sub(int size, int ***A, int ai, int aj, int ***B, int bi, int bj){
     for (i=0;i<size;i++){
     	C[i]=malloc(size *sizeof(int *));
 	    	for(j=0;j<size;j++){
-	                C[i][j] += (*A)[ai+i][aj+j] - (*B)[bi+i][bj+j];
+	                C[i][j] = (*A)[ai+i][aj+j] - (*B)[bi+i][bj+j];
 	        }
-	    }
+	}
     verb2p(mostraMatInt(size,&C,0,0),1);
-	    return C;
+	return C;
 }
 
 int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi, int bj){
@@ -122,12 +122,16 @@ int ** matriz_multi_strass(int size, int ***A, int ai, int aj, int ***B, int bi,
         C = malloc(2 * size * sizeof(int*));
         for (i=0;i<(2 * size);i++)
         	C[i] = malloc((2 * size) * sizeof(int *));
+
         verb2p(mostraMatInt(size,&U1,0,0),1);
         matriz_place(size,&C,0,0,&U1);			//C11
+
         verb2p(mostraMatInt(size,&U7,0,0),1);
         matriz_place(size,&C,0,size,&U7);  	//C12
+
         verb2p(mostraMatInt(size,&U4,0,0),1);
         matriz_place(size,&C,size,0,&U4);		//C21
+
         verb2p(mostraMatInt(size,&U5,0,0),1);
         matriz_place(size,&C,size,size,&U5);	//C22
 

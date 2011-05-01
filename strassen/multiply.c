@@ -30,7 +30,7 @@ MyOpt.fileC=NULL;
 /* Processando parametros*/
     opterr = 3;
     int opcao; // Opção passada pelo usuário ao programa.
-        while ((opcao = getopt (argc, argv, "sa:b:c:h")) != -1){
+        while ((opcao = getopt (argc, argv, "v:sa:b:c:h")) != -1){
                 switch(opcao){
                 case 'a':
                     //Matriz A
