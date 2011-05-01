@@ -62,7 +62,7 @@ char *elemento, *linha;
         return 0;
 } 
 // Salva Matriz em Arquivo
-int gravaMatInt(char *filename, int *size, int *Mat){
+int gravaMatInt(char *filename, int size, int *Mat){
     FILE *fp;
     int i=0,j=0;
 //Abrindo arquivo
@@ -72,13 +72,13 @@ int gravaMatInt(char *filename, int *size, int *Mat){
         exit(1);
     }
     //Gravando aqruivo
-    char linha[13*(*size)+10];
+    char linha[13*(size)+10];
     char num[13];
     int s;
     *linha='\0';
-    for(i=0;i<(*size);i++){
-        for(j=0;j<(*size);j++){
-            sprintf(num,"%i,",m(Mat,*size,i,j));
+    for(i=0;i<(size);i++){
+        for(j=0;j<(size);j++){
+            sprintf(num,"%i,",m(Mat,size,i,j));
             strcat(linha,num); 
         }
         s=strlen(linha);

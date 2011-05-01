@@ -89,11 +89,11 @@ MyOpt.fileC=NULL;
 
     if(MyOpt.alg){
         printf("Strassen\n");
-        C = matriz_multi_strass(dim,A,0,0,B,0,0);
+        C = matriz_multi_strass(dim,A,0,0,dim,B,0,0,dim);
     }else{
         C = matriz_multi(dim,A,B);
     }
-    gravaMatInt(MyOpt.fileC,&dim,C);
+    gravaMatInt(MyOpt.fileC,dim,C);
 
     exit(0);
 } 
