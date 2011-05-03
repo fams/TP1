@@ -10,14 +10,9 @@
 #include <stdlib.h>
 #include "backtrack.h"
 #include "../util/es.h"
-#include "../debug.h"
+#include "../util/debug.h"
 
-int calculo_distancia(int n,int i, int j, int v){
-	int io, jo;
-	io= v / n;
-	jo= v % n;
-	return (jo>j?(jo-jo):(jo-jo))+(io>i?(io-io):(io-io));
-}
+
 
 
 struct MyOpt {
@@ -25,6 +20,7 @@ int alg;         // Qual Euristica
 int chamadas;	//limite de chamadas
 char *fileA ;    // arquivo Matriz A (Puzzle)
 char *fileB ;    // arquivo Matriz B (Result)
+int limite;
 } MyOpt;
 
 void mostra_uso(char *name){
@@ -32,30 +28,34 @@ void mostra_uso(char *name){
 }
 
 int main(int argc, char **argv){
-int opterr,dim;
-int **A,**B;
+int opterr,dim,pos;
+int *A,*Mem;
 
 MyOpt.alg  =0;
 _VERB =0;
 MyOpt.fileA=NULL;
 MyOpt.fileB=NULL;
+MyOpt.limite= 1024;
 
 
 /* Processando parametros*/
-    opterr = 3;
+    opterr = 2;
     int opcao; // Opção passada pelo usuário ao programa.
-        while ((opcao = getopt (argc, argv, "a:b:h")) != -1){
+        while ((opcao = getopt (argc, argv, "l:v:a:b:h")) != -1){
                 switch(opcao){
                 case 'a':
                     //Matriz A
                     MyOpt.fileA = optarg;
                     opterr--;
                     break;
-
                 case 'b':
                     //Matriz B
                     MyOpt.fileB = optarg;
                     opterr--;
+                    break;
+                case 'l':
+                    //Matriz B
+                    MyOpt.limite = atoi(optarg);
                     break;
                 case 'v':
                     //Verbosidade
@@ -88,9 +88,12 @@ MyOpt.fileB=NULL;
 
 
    printf("Processando Puzzle\n");
-    B = Puzzle(dim,&A);
-
-    gravaMatInt(MyOpt.fileB,&dim,&B);
+   MaxProf = MyOpt.limite;
+   Mem = malloc(sizeof(int) * (dim*dim) * MaxProf);
+   pos = 8;
+    if(bs_puzzle(dim,A,Mem,&pos,0)){
+    	gravaMatInt(MyOpt.fileB,dim,A);
+    }
 
     exit(0);
 }

@@ -30,3 +30,20 @@ void embaralha(int tamanho, int *A, int entropia){
         	//printf("\n");
     }
 }
+
+int Insoluvel(int *A, int n){
+int i,j,errados=0;
+    for(i=0;i<n*n;i++){
+        if(A[i] == 0)
+            continue;
+        for(j=i+1;j<(n * n);j++){
+            if(A[j] == 0)
+                continue;
+            if(A[i] > A[j])
+                errados++;
+        }
+    }
+    return errados % 2;
+}
+
+        

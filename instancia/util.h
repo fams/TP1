@@ -7,3 +7,5 @@
 
 
 void embaralha(int tamanho, int *A, int entropia);
+int Insoluvel(int *A, int n); 
+

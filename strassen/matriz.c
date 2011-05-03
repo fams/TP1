@@ -6,9 +6,8 @@
 #define m(mat,size,i,j) mat[((size)*(i))+(j)]
 
 
-   int matriz_place( int n, int *A, int ai, int aj,int as, int *C, int ci, int cj, int cs);
-// Salva Matriz em Arquivo
-int mostraMatInt2(int n, int ms,int *Mat, int mi, int mj);
+int matriz_place( int n, int *A, int ai, int aj,int as, int *C, int ci, int cj, int cs);
+
 
 void free_matriz(int size, int ***A){
 	int i;
@@ -240,30 +239,4 @@ int * matriz_multi_strass(
 	   return 1;
 }
 
-   int mostraMatInt2(
-		   int n,  	//Tamanho
-		   int ms, 	//Deslocamento
-		   int *Mat,//Matriz
-		   int mi, 	//linha
-		   int mj  	//coluna
-		 ){
-       int i=0,j=0;
-       //Gravando aqruivo
-       char linha[13*n+10];
-       char num[13];
-       int s;
-       *linha='\0';
-       for(i=0;i<n;i++){
-           for(j=0;j< n;j++){
-               sprintf(num,"%i,",m(Mat,ms,i+mi,j+mj));
-               strcat(linha,num);
-           }
-           s=strlen(linha);
-           linha[s-1]='\n';
-           linha[s]='\0';
-           printf(linha);
-           *linha='\0';
-       }
-       printf("-----\n");
-       return 1;
-   }
+
