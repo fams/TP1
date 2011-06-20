@@ -95,7 +95,13 @@ void Move(int *A, //Estado Atual
 	A[*pos] = aux;
 }
 
-int bs_puzzle(int n, int *A, int *Mem, int *p,int pos){
+int bs_puzzle(
+		int n,    //Tamanho do puzzle
+		int *A,   //Matriz com estado atual
+		int *Mem, //Estados já visitados
+		int *p,	  //Posição atual do buraco
+		int pos   //Numero de passos executados a partir do primeiro
+		){
 	int *ant, destino, validos=0,i;	/* implementando um Branch and bound */
 	posf fila[4];
 
@@ -103,24 +109,31 @@ int bs_puzzle(int n, int *A, int *Mem, int *p,int pos){
 		printf("Profundidade maxima da arvore de pesquisa alcancado: %i\n",MaxProf);
 		exit(1);
 	}
+	//Gera lista de movimentos válidos
+	//Considera-se que quem se move é o "buraco"
+
+	//se não é o topo da matriz, adiciona ir para cima
 	if((*p / n) != 0 ){
 		destino = *p -n;
 		fila[validos].distancia =  calculo_distancia(n,*p,A[destino]) - calculo_distancia(n,destino,A[destino]);
 		fila[validos].movimento = 'c';
 		validos++;
 	}
+	//se não está na extrema direita da matriz, adiciona ir a direita
 	if((*p % n) != (n-1) ){
 		destino = *p + 1;
 		fila[validos].distancia =  calculo_distancia(n,*p,A[destino]) - calculo_distancia(n,destino,A[destino]);
 		fila[validos].movimento = 'd';
 		validos++;
 	}
+	//se não é o fundo da matriz, adiciona ir para baixo
 	if((*p / n) != (n-1) ){
 		destino = *p + n;
 		fila[validos].distancia =  calculo_distancia(n,*p,A[destino]) - calculo_distancia(n,destino,A[destino]);
 		fila[validos].movimento = 'b';
 		validos++;
 	}
+	//se não é o extremo esquerdo da matriz, adiciona ir para esquerda
 	if((*p % n) != 0 ){
 		destino = *p -1;
 		fila[validos].distancia =  calculo_distancia(n,*p,A[destino]) - calculo_distancia(n,destino,A[destino]);
@@ -128,7 +141,7 @@ int bs_puzzle(int n, int *A, int *Mem, int *p,int pos){
 		validos++;
 	}
 
-	//Poucos elementos, vou sortear com insertion
+	//Poucos elementos, vou ordenar com insertion
 	QueuePrio(validos,fila);
 
 	/* fim do Branch and Bound*/
@@ -136,13 +149,18 @@ int bs_puzzle(int n, int *A, int *Mem, int *p,int pos){
 	ant = malloc(sizeof(int));
 	verb2p(printf("Movimento n:%i\n",pos),1);
 	//verb2p(mostraMatInt2(n, n, A, 0, 0),2);
+
+	//Armazena Estado
+	Store(A,Mem,pos,n);
+
+	//Verifica se solucionou
 	if(Solved(n,A)){
-		Store(A,Mem,pos,n);
-    	verb2p(printf("Encontrei uma resposta com %i movimentos\n",pos),2);
+    	verb2p(printf("Encontrei uma resposta com %i movimentos\n",pos),8);
     	verb2p(mostraPassos(Mem,pos,n),4);
     	return 1;
 	}
-	Store(A,Mem,pos,n);
+
+	//Executa moviemntos válidos por ordem de menor distância das peças dos seus lugares coretos
 	for(i=0;i<validos+1;i++){
 		verb2p(printf("Mov %c distancia %i\n",fila[i].movimento,fila[i].distancia),2);
 		switch(fila[i].movimento){

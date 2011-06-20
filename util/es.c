@@ -4,9 +4,9 @@
 #define m(mat,size,i,j) mat[(size*i)+j]
 
 
-#define MATMAX 1024
+#define MATMAX 65535
 
-//Carrega o arquivo da matriz
+//Carrega o arquivo da matriz forçando quadratura
 int carrMatInt(char *filename, int *size, int **Mat){
 FILE *fp;
 char buffer[MATMAX];
@@ -90,7 +90,81 @@ int gravaMatInt(char *filename, int size, int *Mat){
     fclose(fp);
     return 1;
 }
-// Salva Matriz em Arquivo
+//Carrega o arquivo da matriz
+int carrMatInt2(char *filename, int *Di, int *Dj, int **Mat){
+FILE *fp;
+char buffer[MATMAX];
+int  i=0,j=0;
+char *elemento, *linha;
+
+
+//Abrindo arquivo
+    fp = fopen(filename, "r");
+    if(!fp){
+        printf( "Impossivel abrir arquivo %s\n",filename);
+        exit(1);
+    }
+//primeira linha contem a dimensao da matriz
+    linha = fgets(buffer, MATMAX, fp);
+    if(linha == NULL){
+        printf( "Aquivo %s vazio.\n",filename);
+        exit(1);
+    }
+//Obtendo a dimensao
+    elemento = strtok ( linha, "x");
+    *Di = atoi(elemento);
+    elemento = strtok ( '\0', "x");
+    *Dj = atoi(elemento);
+    printf("m = %i, n = %i \n",*Di,*Dj);
+
+
+//Carregando a matriz, completando
+        *Mat = malloc(sizeof(int *) * (*Di) * (*Dj));
+    while((fgets(buffer, MATMAX, fp)!=NULL) && i < *Di){
+    	//Alocando a matriz com inteiros
+    	//(*Mat)[i] = malloc(sizeof(int *)*d*d);
+        elemento = strtok(buffer,",");
+        while( elemento  && j < *Dj){
+            m((*Mat),*Dj,i,j) = atoi(elemento);
+            elemento = strtok('\0',",");
+            j++;
+        }
+        j=0;
+        i++;
+    }
+    return 0;
+}
+// Salva Matriz em Arquivo nao importando a dimensao
+int gravaMatInt2(char *filename, int Di, int Dj, int *Mat){
+    FILE *fp;
+    int i=0,j=0;
+//Abrindo arquivo
+    fp = fopen(filename, "w");
+    if(!fp){
+        printf( "Impossivel abrir arquivo %s\n",filename);
+        exit(1);
+    }
+    //Gravando aqruivo
+    char linha[13*(Dj)+10];
+    char num[13];
+    int s;
+    *linha='\0';
+    for(i=0;i<(Di);i++){
+        for(j=0;j<(Dj);j++){
+            sprintf(num,"%i,",m(Mat,Dj,i,j));
+            strcat(linha,num);
+        }
+        s=strlen(linha);
+        linha[s-1]='\n';
+        linha[s]='\0';
+        fprintf(fp,linha);
+        *linha='\0';
+    }
+    fclose(fp);
+    return 1;
+}
+
+// Mostra Matriz
 int mostraMatInt( int size, int *Mat, int mi, int mj){
     int i=0,j=0;
     //Gravando aqruivo

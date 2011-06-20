@@ -1,70 +1,69 @@
+/*
+ * bastao.c
+ *
+ *  Created on: 12/05/2011
+ *      Author: fams
+ */
+
+
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "matriz.h"
-#include "../util/contadores.h"
+#include "pd.h"
 #include "../util/es.h"
 #include "../util/debug.h"
 
 
-struct MyOpt { 
-int alg;         // Qual algoritimo usar strassen ou padrao
-char *fileA ;    // arquivo Matriz A (fator)
-char *fileB ;    // arquivo Matriz B (fator)
-char *fileC ;    // arquivo Matriz C (produto)
+struct MyOpt {
+char *fileA ;    // matriz com valor das peas
+char *fileB ;    // Melhor corte (Result)
+int   n;		// Tamanho bastao
 } MyOpt;
 
 void mostra_uso(char *name){
-    printf("%s: parametros errados encontrados\n uso: [ -s -v # -a arquivo -b arquivo -c arquivo ] | -h \n", name);
+    printf("%s: parametros errados encontrados\n uso: [ -v # -a arquivo -b arquivo ] | -h \n", name);
 }
 
 int main(int argc, char **argv){
-int opterr,dim;
-int *A,*B,*C;
+int opterr;
+int *A,*B,dimA,dimB,DjA,DiA;
 
-MyOpt.alg  =0;
+
 _VERB =0;
 MyOpt.fileA=NULL;
 MyOpt.fileB=NULL;
-MyOpt.fileC=NULL;
+MyOpt.n= 10;
+
 
 /* Processando parametros*/
-    opterr = 3;
+    opterr = 2;
     int opcao; // Opção passada pelo usuário ao programa.
-        while ((opcao = getopt (argc, argv, "v:sa:b:c:h")) != -1){
+        while ((opcao = getopt (argc, argv, "n:v:a:b:h")) != -1){
                 switch(opcao){
                 case 'a':
                     //Matriz A
                     MyOpt.fileA = optarg;
                     opterr--;
                     break;
-
                 case 'b':
                     //Matriz B
                     MyOpt.fileB = optarg;
                     opterr--;
                     break;
-
-                case 'c':
-                    //Matriz C
-                    MyOpt.fileC = optarg;
-                    opterr--;
+                case 'n':
+                    //Tamanho n
+                    MyOpt.n = atoi(optarg);
                     break;
-
                 case 'v':
                     //Verbosidade
                     _VERB = atoi(optarg);
                     break;
-
-                case 's':
-                    MyOpt.alg = 1;
-                    break;
-
-                case '?':
+            case '?':
                     switch(optopt){
                         case 'a':
                         case 'b':
-                        case 'c':
+                        case 'n':
                         case 'v':
                         fprintf (stderr, "Opção '-%c' requer parametros\n", optopt);
                     break;
@@ -76,7 +75,7 @@ MyOpt.fileC=NULL;
             default:
                 /* Nao para aqui */
                 break;
-                    
+
                 }
     }
     if(opterr>0){
@@ -84,22 +83,14 @@ MyOpt.fileC=NULL;
         exit(1);
     }
     //Carregando Matriz A do arquivo
-    carrMatInt(MyOpt.fileA,&dim, &A);
-    //Carregando Matriz B do arquivo
-    carrMatInt(MyOpt.fileB,&dim, &B);
-    _LCont();
-    _TIni();
-    if(MyOpt.alg){
-        printf("Strassen\n");
-        C = malloc(sizeof(int *) * dim * dim );
-        matriz_multi_strass(dim,A,0,0,dim,B,0,0,dim, C, 0, 0 , dim );
-    }else{
-        C = matriz_multi(dim,A,B);
-    }
-    _TFim();
-    verb1p("Tempo,\tCmp,\t,Atb,\tSom,\tMul\n",4);
-    _ImpCont();
-    gravaMatInt(MyOpt.fileC,dim,C);
+   carrMatInt2(MyOpt.fileA,&DiA, &DjA,&A);
+
+
+   printf("Processando Bastao\n");
+   pdbastao(MyOpt.n,A,DjA);
+
+    //gravaMatInt(MyOpt.fileB,dimB,B);
+
 
     exit(0);
-} 
+}

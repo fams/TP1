@@ -33,6 +33,13 @@ void _Mov(){
 void _Cmp(){
     __CONTADOR.comparacoes++;
 }
+//Incrementa contador de Somas
+void _Som(){
+    __CONTADOR.somas++;
+}//Incrementa contador de Comparacoes
+void _Mul(){
+    __CONTADOR.multiplicacoes++;
+}
 //Obtem Tempo Executado
 time_t _TExec(){
     return difftime(__CONTADOR.T1,__CONTADOR.T0);
@@ -44,9 +51,11 @@ void _LCont(){
     __CONTADOR.movimentacoes = 0;
     __CONTADOR.atribuicoes = 0;
     __CONTADOR.comparacoes = 0;
+    __CONTADOR.somas = 0;
+    __CONTADOR.multiplicacoes = 0;
 }
 void _ImpCont(){
     //printf("%ld,\t%i,\t%i,\t%i\n",_TExec(),__CONTADOR.movimentacoes,__CONTADOR.comparacoes,__CONTADOR.atribuicoes);
-    printf("%ld,\t%lu,\t%lu\n",_TExec(),__CONTADOR.comparacoes,__CONTADOR.atribuicoes);
+    printf("%ld,\t%lu,\t%lu,\t%lu,\t%lu\n",_TExec(),__CONTADOR.comparacoes,__CONTADOR.atribuicoes,__CONTADOR.somas,__CONTADOR.multiplicacoes);
 
 }
